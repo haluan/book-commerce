@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: book-commerce
+server:
+  port: 9001
+  tomcat:
+    connection-timeout: 1s
+    keep-alive-timeout: 5s
+    threads:
+      max: 50
+      min-spare: 5
