@@ -2,6 +2,8 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.5.3'
     id 'io.spring.dependency-management' version '1.1.7'
+    id 'checkstyle'
+    id 'com.diffplug.spotless' version '6.20.0'
 }
 
 group = 'com.bookcommerce'
@@ -19,10 +21,32 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-webflux'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+spotless {
+    java {
+        googleJavaFormat('1.17.0')
+        importOrder 'java', 'javax', 'org', 'com.bookcommerce'
+        removeUnusedImports()
+    }
+}
+
+checkstyle {
+    toolVersion = '10.0'
+    configFile = file('config/checkstyle/checkstyle.xml')
+}
+
+tasks.withType(Checkstyle) {
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+    }
 }
